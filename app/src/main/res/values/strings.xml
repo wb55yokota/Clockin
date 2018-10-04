@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Clockin</string>
+    <string name="client_id"></string>
+    <string name="client_secret"></string>
+    <string name="api_access_token"></string>
+    <string name="api_refresh_token"></string>
+    <string name="redirect_uri">urn:ietf:wg:oauth:2.0:oob</string>
+</resources>
