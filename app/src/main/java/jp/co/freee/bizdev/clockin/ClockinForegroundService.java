@@ -79,7 +79,7 @@ public class ClockinForegroundService extends Service {
             new Runnable() {
                 @Override
                 public void run() {
-                    for(int i=0 ; i<20 ; i++) {
+                    for(int i=0 ; i<999 ; i++) {  // TODO: 実稼働時はwhileループに
                         updateCountAndStatus();
                         sleepService();
                     }
@@ -131,23 +131,21 @@ public class ClockinForegroundService extends Service {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String timestamp = sdf.format(cal.getTime());
-        boolean changeClock = false;
+        boolean isChangeClock = false;
         int h = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         if(toStatus == Status.WORKING && getInt(R.integer.clock_in_start_hour) <= h && h <= getInt(R.integer.clock_in_end_hour)) {
             // 出勤検知
             mHistories.add(0, "出勤 : " + timestamp);
-            changeClock = mAttendances.setClock(ClockData.Clock.IN, cal);
+            isChangeClock = mAttendances.setClock(ClockData.Clock.IN, cal);
         }
         if(toStatus == Status.PRIVATE && getInt(R.integer.clock_out_start_hour) <= h && h <= getInt(R.integer.clock_out_end_hour)) {
             // 退勤検知
             mHistories.add(0, "退勤 : " + timestamp);
-            changeClock = mAttendances.setClock(ClockData.Clock.OUT, cal);
+            isChangeClock = mAttendances.setClock(ClockData.Clock.OUT, cal);
         }
-        mAttendances.save(getApplicationContext());
-        mCurrentStatus = toStatus;
-        mCount = 0;
-        mRetryCount = 0;
-        if(changeClock) {
+        if(isChangeClock) {
+            mAttendances.save(getApplicationContext());
+            mRetryCount = 0;
             ApiClient.ClockType clockType = null;
             if(toStatus == Status.WORKING) {
                 clockType = ApiClient.ClockType.IN;
@@ -156,6 +154,8 @@ public class ClockinForegroundService extends Service {
             }
             sendClockToApi(clockType, timestamp.substring(0, 10));
         }
+        mCurrentStatus = toStatus;
+        mCount = 0;
     }
 
     private void sendClockToApi(final ApiClient.ClockType clockType, final String dateString) {
