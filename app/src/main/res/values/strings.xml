@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">Clockin</string>
+
+    <string name="api_protocol">https</string>
+    <string name="api_host">api.freee.co.jp</string>
+
     <string name="client_id"></string>
     <string name="client_secret"></string>
     <string name="api_access_token"></string>
     <string name="api_refresh_token"></string>
     <string name="redirect_uri">urn:ietf:wg:oauth:2.0:oob</string>
+    <string-array name="ssids">
+        <item>0000-USER_A</item>
+        <item>0000-USER_G</item>
+    </string-array>
 </resources>
