@@ -50,6 +50,10 @@ public class ClockinForegroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        return startClockinService();
+    }
+
+    private int startClockinService() {
         String title = "通知のタイトル";
         String description = "通知の内容";
 
@@ -79,13 +83,19 @@ public class ClockinForegroundService extends Service {
                         updateCountAndStatus();
                         sleepService();
                     }
-                    stopForeground(Service.STOP_FOREGROUND_DETACH);
-                    NotificationManagerCompat.from(getApplicationContext()).cancelAll();
-                    Log.d(TAG, "Finish");
+                    stopClockService();
                 }
             }
         ).start();
         startForeground(1, notification);
+        return START_STICKY;
+    }
+
+    private int stopClockService() {
+        stopForeground(Service.STOP_FOREGROUND_DETACH);
+        stopSelf();
+        NotificationManagerCompat.from(getApplicationContext()).cancelAll();
+        Log.d(TAG, "Finish");
         return START_STICKY;
     }
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 clearAttendances();
+            }
+        });
+        findViewById(R.id.stopServiceButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopClockinService();
             }
         });
     }
