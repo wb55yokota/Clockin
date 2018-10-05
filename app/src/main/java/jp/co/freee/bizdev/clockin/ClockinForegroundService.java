@@ -14,10 +14,8 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 import jp.co.freee.bizdev.clockin.models.Attendances;
@@ -60,7 +58,7 @@ public class ClockinForegroundService extends Service {
 
         NotificationManager manager = (NotificationManager) getSystemService(getApplication().NOTIFICATION_SERVICE);
         if (manager.getNotificationChannel(id) == null) {
-            NotificationChannel channel = new NotificationChannel(id, title, NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel channel = new NotificationChannel(id, title, NotificationManager.IMPORTANCE_LOW);
             channel.setDescription(description);
             manager.createNotificationChannel(channel);
         }
@@ -68,9 +66,7 @@ public class ClockinForegroundService extends Service {
         Notification notification = mBuilder
             .setContentTitle(title)
             .setContentText(description)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setVibrate(new long[]{0L})
-            .setDefaults(0)
+            .setSmallIcon(R.drawable.ic_freee_swallow_white)
             .build();
         notification.flags |= Notification.FLAG_ONGOING_EVENT;
         NotificationManagerCompat.from(getApplicationContext()).notify(NOTIFICATION_ID, notification);
