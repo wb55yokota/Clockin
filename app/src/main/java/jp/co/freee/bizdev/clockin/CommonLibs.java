@@ -47,6 +47,11 @@ public class CommonLibs {
         return true;
     }
 
+    public static boolean isWifiEnabled(Context context) {
+        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        return wifi.isWifiEnabled();
+    }
+
     public static String prettyJson(String str) {
         try {
             JSONObject json = new JSONObject(str);

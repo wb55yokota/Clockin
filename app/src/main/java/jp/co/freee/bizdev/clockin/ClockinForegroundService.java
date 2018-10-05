@@ -101,6 +101,9 @@ public class ClockinForegroundService extends Service {
 
     private void updateCountAndStatus() {
         Log.d(TAG, "Call");
+        if(!CommonLibs.isWifiEnabled(getApplicationContext())) {
+            return;
+        }
         String message = "";
         if(CommonLibs.isInsideFreee(getApplicationContext())) {
             if(mCurrentStatus == Status.PRIVATE) {
@@ -184,8 +187,12 @@ public class ClockinForegroundService extends Service {
         ).start();
     }
 
+    // 通常:60sec / 出勤・退勤時間帯:30sec / WiFi無効化されてる時（含sleep）:600sec
     public void sleepService() {
-        int interval = getInt(R.integer.interval_long);
+        int interval = getInt(R.integer.interval_medium);
+        if(!CommonLibs.isWifiEnabled(getApplicationContext())) {
+            interval = getInt(R.integer.interval_long);
+        }
         int h = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         Log.d(TAG, "hour = " + String.valueOf(h));
         if((getInt(R.integer.clock_in_start_hour) <= h && h <= getInt(R.integer.clock_in_end_hour)) ||
